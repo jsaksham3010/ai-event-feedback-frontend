@@ -12,17 +12,19 @@ function Navbar() {
 
   return (
     <nav className="bg-white shadow-md px-6 py-3 flex items-center justify-between sticky top-0 z-40">
-      <Link to="/dashboard" className="flex items-center space-x-2">
-        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold">
-          A
-        </div>
-        <span className="text-lg font-semibold text-gray-800">
-          Event Feedback Analytics
+      <Link to="/dashboard" className="flex items-center space-x-3">
+        <img
+          src="/logo.png"
+          alt="AI Event Feedback Analytics"
+          className="w-10 h-10 object-contain"
+        />
+        <span className="text-lg font-semibold text-gray-800 hidden sm:inline">
+          AI Event Feedback Analytics
         </span>
       </Link>
 
       <div className="flex items-center space-x-4">
-        <span className="text-sm text-gray-600">
+        <span className="text-sm text-gray-600 hidden sm:inline">
           {user?.name || 'Guest'}
         </span>
         <button
