@@ -6,6 +6,7 @@ import {
 } from 'recharts'
 import { useAuth } from '../context/AuthContext.jsx'
 import { checkHealth } from '../services/healthService.js'
+import StatCard from '../components/StatCard.jsx'
 
 // ---- Demo data (later replaced with real backend analytics) ----
 const sentimentData = [
@@ -28,23 +29,6 @@ const engagementDist = [
   { level: 'Moderately Engaged', count: 294 },
   { level: 'Disengaged',         count: 303 },
 ]
-
-function MetricCard({ label, value, subtext, icon, color }) {
-  return (
-    <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-3">
-        <p className="text-sm text-gray-500">{label}</p>
-        <span className="text-2xl">{icon}</span>
-      </div>
-      <p className={`text-3xl font-bold ${color || 'text-gray-800'}`}>
-        {value}
-      </p>
-      {subtext && (
-        <p className="text-xs text-gray-400 mt-1">{subtext}</p>
-      )}
-    </div>
-  )
-}
 
 function Dashboard() {
   const { user } = useAuth()
@@ -107,27 +91,27 @@ function Dashboard() {
 
       {/* ---- Metric Cards ---- */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <MetricCard
+        <StatCard
           label="Total Events"
           value="0"
           subtext="Create your first event"
           icon="📅"
         />
-        <MetricCard
+        <StatCard
           label="Predictions Made"
           value="0"
           subtext="ML satisfaction predictions"
           icon="🎯"
           color="text-primary"
         />
-        <MetricCard
+        <StatCard
           label="Feedback Analyzed"
           value="0"
           subtext="Sentiment analysis runs"
           icon="💬"
           color="text-secondary"
         />
-        <MetricCard
+        <StatCard
           label="Avg Satisfaction"
           value="—"
           subtext="Out of 9 (need data)"

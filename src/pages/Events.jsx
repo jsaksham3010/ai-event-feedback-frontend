@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext.jsx'
 import {
   listEvents,
   createEvent,
   deleteEvent,
 } from '../services/eventService.js'
-
-// Temporary: hardcoded org id (will come from auth later)
-const TEST_ORG_ID = '6aa80955fd3ef325c414cadc'
 
 const initialForm = {
   name: '',
@@ -15,6 +14,9 @@ const initialForm = {
 }
 
 function Events() {
+  const { user } = useAuth()
+  const orgId = user?.organization_id
+
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -27,7 +29,7 @@ function Events() {
     setLoading(true)
     setError('')
     try {
-      const data = await listEvents(TEST_ORG_ID)
+      const data = await listEvents(orgId)
       setEvents(data.events || [])
     } catch (err) {
       setError(
@@ -52,7 +54,7 @@ function Events() {
 
     try {
       const payload = {
-        organization_id: TEST_ORG_ID,
+        organization_id: orgId,
         name: form.name,
         type: form.type,
         participant_count: Number(form.participant_count),
@@ -238,7 +240,12 @@ function Events() {
             >
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-800">
-                  {event.name}
+                  <Link
+                    to={`/events/${event._id}`}
+                    className="hover:text-primary transition-colors"
+                  >
+                    {event.name}
+                  </Link>
                 </h3>
                 <div className="flex items-center space-x-4 mt-1 text-xs text-gray-500">
                   <span className="capitalize bg-gray-100 px-2 py-0.5 rounded">
@@ -249,13 +256,22 @@ function Events() {
                 </div>
               </div>
 
-              <button
-                onClick={() => handleDelete(event._id)}
-                className="text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-2 rounded-lg"
-                title="Delete event"
-              >
-                🗑️
-              </button>
+              <div className="flex items-center space-x-2">
+                <Link
+                  to={`/events/${event._id}`}
+                  className="text-primary hover:bg-indigo-50 px-3 py-2 rounded-lg text-sm font-medium"
+                  title="View analytics"
+                >
+                  View
+                </Link>
+                <button
+                  onClick={() => handleDelete(event._id)}
+                  className="text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-2 rounded-lg"
+                  title="Delete event"
+                >
+                  🗑️
+                </button>
+              </div>
             </div>
           ))}
         </div>
